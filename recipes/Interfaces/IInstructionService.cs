@@ -1,16 +1,17 @@
-﻿using recipes.DTO.Instructions;
+﻿using recipes.Common;
+using recipes.DTO.Instructions;
 using recipes.Models;
 
 namespace recipes.Interfaces
 {
     public interface IInstructionService
     {
-        Task<IEnumerable<InstructionResponseDto>> GetAllAsync();
-        Task<InstructionResponseDto?> GetByIdAsync(int id);
-        Task<IEnumerable<InstructionResponseDto>> GetByRecipeIdAsync(int recipeId);
+        Task<OperationResult<List<InstructionResponseDto>>> GetAllAsync();
+        Task<OperationResult<InstructionResponseDto>> GetByIdAsync(int id);
+        Task<OperationResult<List<InstructionResponseDto>>> GetByRecipeIdAsync(int recipeId);
 
-        Task CreateAsync(CreateInstructionDto dto);
-        Task UpdateAsync(int id, UpdateInstructionDto dto);
-        Task DeleteAsync(int id);
+        Task<OperationResult<bool>> CreateAsync(CreateInstructionDto dto);
+        Task<OperationResult<bool>> UpdateAsync(int id, UpdateInstructionDto dto);
+        Task<OperationResult<bool>> DeleteAsync(int id);
     }
 }

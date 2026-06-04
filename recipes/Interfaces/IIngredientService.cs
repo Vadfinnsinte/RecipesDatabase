@@ -1,15 +1,16 @@
-﻿using recipes.DTO.Ingredients;
+﻿using recipes.Common;
+using recipes.DTO.Ingredients;
 
 namespace recipes.Interfaces
 {
     public interface IIngredientService
     {
-        Task<List<IngredientResponseDto>> GetAllAsync();
-        Task<IngredientResponseDto?> GetByIdAsync(int id);
-        Task<List<IngredientResponseDto>> GetByRecipeIdAsync(int recipeId);
+        Task<OperationResult<List<IngredientResponseDto>>> GetAllAsync();
+        Task<OperationResult<IngredientResponseDto>> GetByIdAsync(int id);
+        Task<OperationResult<List<IngredientResponseDto>>> GetByRecipeIdAsync(int recipeId);
 
-        Task CreateAsync(CreateIngredientDto dto);
-        Task UpdateAsync(int id, UpdateIngredientDto dto);
-        Task DeleteAsync(int id);
+        Task<OperationResult<bool>> CreateAsync(CreateIngredientDto dto);
+        Task<OperationResult<bool>> UpdateAsync(int id, UpdateIngredientDto dto);
+        Task<OperationResult<bool>> DeleteAsync(int id);
     }
 }

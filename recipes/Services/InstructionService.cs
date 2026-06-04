@@ -1,4 +1,5 @@
-﻿using recipes.DTO.Instructions;
+﻿using recipes.Common;
+using recipes.DTO.Instructions;
 using recipes.Interfaces;
 using recipes.Models;
 
@@ -13,39 +14,29 @@ namespace recipes.Services
             _instructionRepository = instructionRepository;
         }
 
-        public async Task<IEnumerable<InstructionResponseDto>> GetAllAsync()
+        public async Task<OperationResult<List<InstructionResponseDto>>> GetAllAsync()
         {
             var instructions = await _instructionRepository.GetAllAsync();
 
-            return instructions.Select(i => new InstructionResponseDto
+            var result = instructions.Select(i => new InstructionResponseDto
             {
                 Id = i.Id,
                 StepNumber = i.StepNumber,
                 Description = i.Description,
                 RecipeId = i.RecipeId
-            });
+            }).ToList();
+
+            return OperationResult<List<InstructionResponseDto>>.Success(result);
         }
 
-        public async Task<InstructionResponseDto?> GetByIdAsync(int id)
+        public async Task<OperationResult<InstructionResponseDto>> GetByIdAsync(int id)
         {
             var i = await _instructionRepository.GetByIdAsync(id);
 
-            if (i == null) return null;
+            if (i == null)
+                return OperationResult<InstructionResponseDto>.Failure("Instruction not found");
 
-            return new InstructionResponseDto
-            {
-                Id = i.Id,
-                StepNumber = i.StepNumber,
-                Description = i.Description,
-                RecipeId = i.RecipeId
-            };
-        }
-
-        public async Task<IEnumerable<InstructionResponseDto>> GetByRecipeIdAsync(int recipeId)
-        {
-            var instructions = await _instructionRepository.GetByRecipeIdAsync(recipeId);
-
-            return instructions.Select(i => new InstructionResponseDto
+            return OperationResult<InstructionResponseDto>.Success(new InstructionResponseDto
             {
                 Id = i.Id,
                 StepNumber = i.StepNumber,
@@ -54,7 +45,22 @@ namespace recipes.Services
             });
         }
 
-        public async Task CreateAsync(CreateInstructionDto dto)
+        public async Task<OperationResult<List<InstructionResponseDto>>> GetByRecipeIdAsync(int recipeId)
+        {
+            var instructions = await _instructionRepository.GetByRecipeIdAsync(recipeId);
+
+            var result = instructions.Select(i => new InstructionResponseDto
+            {
+                Id = i.Id,
+                StepNumber = i.StepNumber,
+                Description = i.Description,
+                RecipeId = i.RecipeId
+            }).ToList();
+
+            return OperationResult<List<InstructionResponseDto>>.Success(result);
+        }
+
+        public async Task<OperationResult<bool>> CreateAsync(CreateInstructionDto dto)
         {
             var instruction = new Instruction
             {
@@ -64,24 +70,35 @@ namespace recipes.Services
             };
 
             await _instructionRepository.AddAsync(instruction);
+
+            return OperationResult<bool>.Success(true);
         }
 
-        public async Task UpdateAsync(int id, UpdateInstructionDto dto)
+        public async Task<OperationResult<bool>> UpdateAsync(int id, UpdateInstructionDto dto)
         {
             var instruction = await _instructionRepository.GetByIdAsync(id);
 
             if (instruction == null)
-                return;
+                return OperationResult<bool>.Failure("Instruction not found");
 
             instruction.StepNumber = dto.StepNumber;
             instruction.Description = dto.Description;
 
             await _instructionRepository.UpdateAsync(instruction);
+
+            return OperationResult<bool>.Success(true);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
+            var instruction = await _instructionRepository.GetByIdAsync(id);
+
+            if (instruction == null)
+                return OperationResult<bool>.Failure("Instruction not found");
+
             await _instructionRepository.DeleteAsync(id);
+
+            return OperationResult<bool>.Success(true);
         }
     }
 }

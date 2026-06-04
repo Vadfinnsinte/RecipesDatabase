@@ -1,14 +1,15 @@
-﻿using recipes.DTO.Recipes;
+﻿using recipes.Common;
+using recipes.DTO.Recipes;
 
 namespace recipes.Interfaces
 {
     public interface IRecipeService
     {
-        Task<IEnumerable<RecipeResponseDto>> GetAllAsync();
-        Task<RecipeResponseDto?> GetByIdAsync(int id);
-        Task CreateAsync(CreateRecipeDto dto);
-        Task<RecipeDetailDto?> GetFullRecipeByIdAsync(int id);
-        Task UpdateAsync(int id, CreateRecipeDto dto);
-        Task DeleteAsync(int id);
+        Task<OperationResult<List<RecipeResponseDto>>> GetAllAsync();
+        Task<OperationResult<RecipeResponseDto>> GetByIdAsync(int id);
+        Task<OperationResult<bool>> CreateAsync(CreateRecipeDto dto);
+        Task<OperationResult<RecipeDetailDto>> GetFullRecipeByIdAsync(int id);
+        Task<OperationResult<bool>> UpdateAsync(int id, CreateRecipeDto dto);
+        Task<OperationResult<bool>> DeleteAsync(int id);
     }
 }

@@ -57,7 +57,7 @@ namespace TestRecipes
 
         }
         [Fact]
-        public async Task UpdateAsync_Should_ThrowException_When_InstructionNotFound()
+        public async Task UpdateAsync_Should_ReturnFailure_When_NotFound()
         {
             var repo = Substitute.For<IInstructionRepository>();
             var service = new InstructionService(repo);
@@ -70,8 +70,10 @@ namespace TestRecipes
                 Description = "Updated"
             };
 
-            await Assert.ThrowsAsync<Exception>(() =>
-                service.UpdateAsync(1, dto));
+            var result = await service.UpdateAsync(1, dto);
+
+            Assert.False(result.IsSuccess);
+            Assert.Contains("Instruction not found", result.Errors);
         }
     }
 }

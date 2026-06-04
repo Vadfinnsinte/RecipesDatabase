@@ -37,8 +37,8 @@ namespace TestRecipes
                 r.Name == "Pizza" && r.Description == "Good pizza" && r.CookingTimeMinutes == 30));
         }
         [Fact]
-        // Checks for null after calling id that is not found by repository.
-        public async Task GetByIdAsync_Should_ReturnNull_When_NotFound()
+        // Checks for failure after calling id that is not found by repository.
+        public async Task GetByIdAsync_Should_ReturnFailure_When_NotFound()
         {
             var recipeRepo = Substitute.For<IRecipeRepository>();
             var ingredientRepo = Substitute.For<IIngredientRepository>();
@@ -48,9 +48,12 @@ namespace TestRecipes
 
             recipeRepo.GetByIdAsync(1).Returns((Recipe)null);
 
+            
             var result = await service.GetByIdAsync(1);
-        
-            Assert.Null(result);
+
+            Assert.False(result.IsSuccess);
+            Assert.Contains("Recipe not found", result.Errors);
         }
     }
+    
 }

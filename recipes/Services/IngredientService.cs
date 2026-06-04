@@ -1,4 +1,5 @@
-﻿using recipes.DTO.Ingredients;
+﻿using recipes.Common;
+using recipes.DTO.Ingredients;
 using recipes.Interfaces;
 using recipes.Models;
 
@@ -13,26 +14,33 @@ namespace recipes.Services
             _repository = repository;
         }
 
-        public async Task<List<IngredientResponseDto>> GetAllAsync()
+        public async Task<OperationResult<List<IngredientResponseDto>>> GetAllAsync()
         {
             var ingredients = await _repository.GetAllAsync();
+            var result = ingredients.Select(MapToDto).ToList();
 
-            return ingredients.Select(MapToDto).ToList();
+            return OperationResult<List<IngredientResponseDto>>.Success(result);
         }
 
-        public async Task<IngredientResponseDto?> GetByIdAsync(int id)
+        public async Task<OperationResult<IngredientResponseDto>> GetByIdAsync(int id)
         {
             var ingredient = await _repository.GetByIdAsync(id);
-            return ingredient == null ? null : MapToDto(ingredient);
+
+            if (ingredient == null)
+                return OperationResult<IngredientResponseDto>.Failure("Ingredient not found");
+
+            return OperationResult<IngredientResponseDto>.Success(MapToDto(ingredient));
         }
 
-        public async Task<List<IngredientResponseDto>> GetByRecipeIdAsync(int recipeId)
+        public async Task<OperationResult<List<IngredientResponseDto>>> GetByRecipeIdAsync(int recipeId)
         {
             var ingredients = await _repository.GetByRecipeIdAsync(recipeId);
-            return ingredients.Select(MapToDto).ToList();
+            var result = ingredients.Select(MapToDto).ToList();
+
+            return OperationResult<List<IngredientResponseDto>>.Success(result);
         }
 
-        public async Task CreateAsync(CreateIngredientDto dto)
+        public async Task<OperationResult<bool>> CreateAsync(CreateIngredientDto dto)
         {
             var ingredient = new Ingredient
             {
@@ -43,30 +51,33 @@ namespace recipes.Services
             };
 
             await _repository.AddAsync(ingredient);
+            return OperationResult<bool>.Success(true);
         }
 
-        public async Task UpdateAsync(int id, UpdateIngredientDto dto)
+        public async Task<OperationResult<bool>> UpdateAsync(int id, UpdateIngredientDto dto)
         {
             var ingredient = await _repository.GetByIdAsync(id);
 
             if (ingredient == null)
-                throw new Exception("Ingredient not found");
+                return OperationResult<bool>.Failure("Ingredient not found");
 
             ingredient.Name = dto.Name;
             ingredient.Amount = dto.Amount;
             ingredient.Unit = dto.Unit;
 
             await _repository.UpdateAsync(ingredient);
+            return OperationResult<bool>.Success(true);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
             var ingredient = await _repository.GetByIdAsync(id);
 
             if (ingredient == null)
-                throw new Exception("Ingredient not found");
+                return OperationResult<bool>.Failure("Ingredient not found");
 
             await _repository.DeleteAsync(id);
+            return OperationResult<bool>.Success(true);
         }
 
         private static IngredientResponseDto MapToDto(Ingredient i)

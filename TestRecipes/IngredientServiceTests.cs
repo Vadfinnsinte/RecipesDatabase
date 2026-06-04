@@ -2,9 +2,6 @@
 using recipes.Interfaces;
 using recipes.Models;
 using recipes.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TestRecipes
 {
@@ -26,7 +23,11 @@ namespace TestRecipes
             var result = await service.GetByRecipeIdAsync(1);
 
             await repo.Received(1).GetByRecipeIdAsync(1);
-            var item = Assert.Single(result);
+
+            Assert.True(result.IsSuccess);
+
+            var item = Assert.Single(result.Data);
+
             Assert.Equal("Flour", item.Name);
             Assert.Equal(1, item.RecipeId);
 
