@@ -30,6 +30,17 @@ namespace recipes
                 .HasOne(i => i.Recipe)
                 .WithMany(r => r.Instructions)
                 .HasForeignKey(i => i.RecipeId);
+            modelBuilder.Entity<Recipe>()
+                .HasMany(r => r.Ingredients)
+                .WithOne(i => i.Recipe)
+                .HasForeignKey(i => i.RecipeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(r => r.Instructions)
+                .WithOne(i => i.Recipe)
+                .HasForeignKey(i => i.RecipeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

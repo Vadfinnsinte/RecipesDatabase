@@ -32,7 +32,7 @@ namespace recipes.Controllers
             return Ok(instruction);
         }
 
-        [HttpGet("recipe/{recipeId}")]
+        [HttpGet("recipe/{recipeId:int}")]
         public async Task<IActionResult> GetByRecipeId(int recipeId)
         {
             return Ok(await _instructionService.GetByRecipeIdAsync(recipeId));

@@ -7,5 +7,7 @@ namespace recipes.Interfaces
         Task<IEnumerable<RecipeResponseDto>> GetAllAsync();
         Task<RecipeResponseDto?> GetByIdAsync(int id);
         Task CreateAsync(CreateRecipeDto dto);
+        Task<RecipeDetailDto?> GetFullRecipeByIdAsync(int id);
+        Task DeleteAsync(int id);
     }
 }

@@ -32,12 +32,28 @@ namespace recipes.Controllers
 
             return Ok(recipe);
         }
+        [HttpGet("{id:int}/full")]
+        public async Task<IActionResult> GetFullRecipe(int id)
+        {
+            var recipe = await _recipeService.GetFullRecipeByIdAsync(id);
+
+            if (recipe == null)
+                return NotFound();
+
+            return Ok(recipe);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateRecipeDto dto)
         {
             await _recipeService.CreateAsync(dto);
             return Ok();
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _recipeService.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
