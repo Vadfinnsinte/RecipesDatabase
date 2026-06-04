@@ -32,6 +32,19 @@ namespace TestRecipes
             Assert.Equal(1, item.RecipeId);
 
         }
+        [Fact]
+        public async Task GetByRecipeId_Should_ReturnEmptyList_When_NoIngredientsExist()
+        {
+            var repo = Substitute.For<IIngredientRepository>();
+            var service = new IngredientService(repo);
+
+            repo.GetByRecipeIdAsync(1).Returns(new List<Ingredient>());
+
+            var result = await service.GetByRecipeIdAsync(1);
+
+            Assert.True(result.IsSuccess);
+            Assert.Empty(result.Data);
+        }
 
     }
 }
