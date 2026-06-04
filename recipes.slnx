@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="recipes/recipes.csproj" />
+  <Project Path="TestRecipes/TestRecipes.csproj" Id="6c85249b-35d3-4076-bb98-a108d90d37b1" />
 </Solution>
