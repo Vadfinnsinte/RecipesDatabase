@@ -21,7 +21,7 @@ namespace recipes.Controllers
             return Ok(await _instructionService.GetAllAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var instruction = await _instructionService.GetByIdAsync(id);
@@ -45,16 +45,16 @@ namespace recipes.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(
-                [FromRoute] int id,
+                int id,
                 [FromBody] UpdateInstructionDto dto)
         {
             await _instructionService.UpdateAsync(id, dto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _instructionService.DeleteAsync(id);

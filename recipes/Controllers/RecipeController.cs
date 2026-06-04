@@ -22,7 +22,7 @@ namespace recipes.Controllers
             return Ok(recipes);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var recipe = await _recipeService.GetByIdAsync(id);
