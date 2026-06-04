@@ -42,7 +42,7 @@ namespace recipes.Controllers
         public async Task<IActionResult> Create(CreateIngredientDto dto)
         {
             await _service.CreateAsync(dto);
-            return Ok();
+            return Created();
         }
 
         [HttpPut("{id:int}")]

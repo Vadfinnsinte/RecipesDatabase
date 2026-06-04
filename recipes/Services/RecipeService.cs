@@ -95,6 +95,19 @@ namespace recipes.Services
                 }).ToList()
             };
         }
+        public async Task UpdateAsync(int id, CreateRecipeDto dto)
+        {
+            var recipe = await _recipeRepository.GetByIdAsync(id);
+
+            if (recipe == null)
+                throw new Exception("Recipe not found");
+
+            recipe.Name = dto.Name;
+            recipe.Description = dto.Description;
+            recipe.CookingTimeMinutes = dto.CookingTimeMinutes;
+
+            await _recipeRepository.UpdateAsync(recipe);
+        }
         public async Task DeleteAsync(int id)
         {
             await _recipeRepository.DeleteAsync(id);

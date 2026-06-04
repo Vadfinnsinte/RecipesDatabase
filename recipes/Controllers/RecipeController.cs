@@ -49,6 +49,12 @@ namespace recipes.Controllers
             await _recipeService.CreateAsync(dto);
             return Ok();
         }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, CreateRecipeDto dto)
+        {
+            await _recipeService.UpdateAsync(id, dto);
+            return NoContent();
+        }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

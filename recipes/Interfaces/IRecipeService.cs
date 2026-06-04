@@ -8,6 +8,7 @@ namespace recipes.Interfaces
         Task<RecipeResponseDto?> GetByIdAsync(int id);
         Task CreateAsync(CreateRecipeDto dto);
         Task<RecipeDetailDto?> GetFullRecipeByIdAsync(int id);
+        Task UpdateAsync(int id, CreateRecipeDto dto);
         Task DeleteAsync(int id);
     }
 }
