@@ -18,24 +18,35 @@ namespace recipes.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _instructionService.GetAllAsync());
+           var result = await _instructionService.GetAllAsync();
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Errors);
+
+            return Ok(result.Data);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var instruction = await _instructionService.GetByIdAsync(id);
+            var result = await _instructionService.GetByIdAsync(id);
 
-            if (instruction == null)
-                return NotFound();
 
-            return Ok(instruction);
+            if (!result.IsSuccess)
+                return BadRequest(result.Errors);
+
+            return Ok(result.Data);
         }
 
         [HttpGet("recipe/{recipeId:int}")]
         public async Task<IActionResult> GetByRecipeId(int recipeId)
         {
-            return Ok(await _instructionService.GetByRecipeIdAsync(recipeId));
+            var result = await _instructionService.GetByRecipeIdAsync(recipeId);
+
+            if (!result.IsSuccess)
+                return NotFound(result.Errors);
+
+            return Ok(result.Data);
         }
 
         [HttpPost]
@@ -48,16 +59,24 @@ namespace recipes.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(
                 int id,
-                [FromBody] UpdateInstructionDto dto)
+                UpdateInstructionDto dto)
         {
-            await _instructionService.UpdateAsync(id, dto);
+            var result = await _instructionService.UpdateAsync(id, dto);
+
+            if (!result.IsSuccess)
+                return NotFound(result.Errors);
+
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _instructionService.DeleteAsync(id);
+            var result = await _instructionService.DeleteAsync(id);
+
+            if (!result.IsSuccess)
+                return NotFound(result.Errors);
+
             return NoContent();
         }
     }

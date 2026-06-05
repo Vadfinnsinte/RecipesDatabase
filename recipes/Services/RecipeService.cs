@@ -1,4 +1,5 @@
-﻿using recipes.DTO.Ingredients;
+﻿using recipes.Common;
+using recipes.DTO.Ingredients;
 using recipes.DTO.Instructions;
 using recipes.DTO.Recipes;
 using recipes.Interfaces;
@@ -22,36 +23,38 @@ namespace recipes.Services
             _instructionRepository = instructionRepository;
         }
 
-        public async Task<IEnumerable<RecipeResponseDto>> GetAllAsync()
+        public async Task<OperationResult<List<RecipeResponseDto>>> GetAllAsync()
         {
             var recipes = await _recipeRepository.GetAllAsync();
 
-            return recipes.Select(r => new RecipeResponseDto
+            var result = recipes.Select(r => new RecipeResponseDto
             {
                 Id = r.Id,
                 Name = r.Name,
                 Description = r.Description,
                 CookingTimeMinutes = r.CookingTimeMinutes
-            });
+            }).ToList();
+
+            return OperationResult<List<RecipeResponseDto>>.Success(result);
         }
 
-        public async Task<RecipeResponseDto?> GetByIdAsync(int id)
+        public async Task<OperationResult<RecipeResponseDto>> GetByIdAsync(int id)
         {
             var recipe = await _recipeRepository.GetByIdAsync(id);
 
             if (recipe == null)
-                return null;
+                return OperationResult<RecipeResponseDto>.Failure("Recipe not found");
 
-            return new RecipeResponseDto
+            return OperationResult<RecipeResponseDto>.Success(new RecipeResponseDto
             {
                 Id = recipe.Id,
                 Name = recipe.Name,
                 Description = recipe.Description,
                 CookingTimeMinutes = recipe.CookingTimeMinutes
-            };
+            });
         }
 
-        public async Task CreateAsync(CreateRecipeDto dto)
+        public async Task<OperationResult<bool>> CreateAsync(CreateRecipeDto dto)
         {
             var recipe = new Recipe
             {
@@ -61,18 +64,19 @@ namespace recipes.Services
             };
 
             await _recipeRepository.AddAsync(recipe);
+            return OperationResult<bool>.Success(true);
         }
-        public async Task<RecipeDetailDto?> GetFullRecipeByIdAsync(int id)
+        public async Task<OperationResult<RecipeDetailDto>> GetFullRecipeByIdAsync(int id)
         {
             var recipe = await _recipeRepository.GetByIdAsync(id);
 
             if (recipe == null)
-                return null;
+                return OperationResult<RecipeDetailDto>.Failure("Recipe not found");
 
             var ingredients = await _ingredientRepository.GetByRecipeIdAsync(id);
             var instructions = await _instructionRepository.GetByRecipeIdAsync(id);
 
-            return new RecipeDetailDto
+            return OperationResult<RecipeDetailDto>.Success(new RecipeDetailDto
             {
                 Id = recipe.Id,
                 Name = recipe.Name,
@@ -93,24 +97,32 @@ namespace recipes.Services
                     Description = i.Description,
                     RecipeId = i.RecipeId
                 }).ToList()
-            };
+            });
         }
-        public async Task UpdateAsync(int id, CreateRecipeDto dto)
+        public async Task<OperationResult<bool>> UpdateAsync(int id, CreateRecipeDto dto)
         {
             var recipe = await _recipeRepository.GetByIdAsync(id);
 
             if (recipe == null)
-                throw new Exception("Recipe not found");
+                return OperationResult<bool>.Failure("Recipe not found");
 
             recipe.Name = dto.Name;
             recipe.Description = dto.Description;
             recipe.CookingTimeMinutes = dto.CookingTimeMinutes;
 
             await _recipeRepository.UpdateAsync(recipe);
+            return OperationResult<bool>.Success(true);
         }
-        public async Task DeleteAsync(int id)
+        public async Task<OperationResult<bool>> DeleteAsync(int id)
         {
+            var recipe = await _recipeRepository.GetByIdAsync(id);
+
+            if (recipe == null)
+                return OperationResult<bool>.Failure("Recipe not found");
+
             await _recipeRepository.DeleteAsync(id);
+
+            return OperationResult<bool>.Success(true);
         }
     }
 }
