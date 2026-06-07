@@ -84,3 +84,7 @@ button:hover {
   padding: 2rem;
   border-radius: 2rem;
 }
+.input-label-layout {
+  display: flex;
+  flex-direction: column;
+}

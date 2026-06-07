@@ -29,8 +29,6 @@ export const GetEverything = async (id) => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-
     switch (response.status) {
       case 404:
         throw new Error(errorData?.[0] ?? "Recipe not found");
