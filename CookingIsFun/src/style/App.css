@@ -75,3 +75,12 @@ button:hover {
     width: 1.5em;
   }
 }
+.loading-box {
+  background-color: var(--accent-orange);
+  margin: auto;
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 50%;
+  padding: 2rem;
+  border-radius: 2rem;
+}

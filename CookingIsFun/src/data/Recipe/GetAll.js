@@ -19,3 +19,27 @@ export const GetAllRecipe = async () => {
 
   return data;
 };
+
+export const GetEverything = async (id) => {
+  const response = await fetch(`${ConnectionString}/Recipes/${id}/full`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+
+    switch (response.status) {
+      case 404:
+        throw new Error(errorData?.[0] ?? "Recipe not found");
+      default:
+        throw new Error(`Error: ${response.status}`);
+    }
+  }
+
+  const data = await response.json();
+
+  return data;
+};
