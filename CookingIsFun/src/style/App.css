@@ -88,3 +88,35 @@ button:hover {
   display: flex;
   flex-direction: column;
 }
+.input-label-container {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+input {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--text-color);
+}
+
+.saved-data {
+  padding: 2rem;
+  border-radius: 2rem 2rem 0 0;
+  background-color: #518a8a;
+  margin: 0 1.5em;
+}
+.text-center {
+  text-align: center;
+}
+.container-p {
+  display: flex;
+  flex-direction: row;
+}
+.m-r {
+  margin-right: 1rem;
+}
+.done {
+  background-color: var(--bg-color);
+}

@@ -1,4 +1,6 @@
-const AddIngredient = (
+import InputLabel from "./InputLabel";
+
+const AddIngredient = ({
   ingredientName,
   setIngredientName,
   amount,
@@ -6,7 +8,7 @@ const AddIngredient = (
   unit,
   setUnit,
   handleIngredientSave,
-) => {
+}) => {
   return (
     <form>
       <h1>Lägg till Ingrediens</h1>
@@ -28,7 +30,9 @@ const AddIngredient = (
         value={unit}
         setValue={setUnit}
       />
-      <button onClick={handleIngredienSave}>Spara</button>
+      <button type="button" onClick={handleIngredientSave}>
+        Spara
+      </button>
       {/* lägg till vad som bestämmer om man ska gå vidare till instruktioner eller fortsätta med ingredient */}
     </form>
   );
