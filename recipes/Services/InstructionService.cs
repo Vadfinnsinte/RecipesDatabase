@@ -1,4 +1,5 @@
 ﻿using recipes.Common;
+using recipes.DTO;
 using recipes.DTO.Instructions;
 using recipes.Interfaces;
 using recipes.Models;
@@ -60,7 +61,7 @@ namespace recipes.Services
             return OperationResult<List<InstructionResponseDto>>.Success(result);
         }
 
-        public async Task<OperationResult<bool>> CreateAsync(CreateInstructionDto dto)
+        public async Task<OperationResult<CreateResponseDto>> CreateAsync(CreateInstructionDto dto)
         {
             var instruction = new Instruction
             {
@@ -71,7 +72,12 @@ namespace recipes.Services
 
             await _instructionRepository.AddAsync(instruction);
 
-            return OperationResult<bool>.Success(true);
+            return OperationResult<CreateResponseDto>.Success(
+                    new CreateResponseDto
+                    {
+                        Id = instruction.Id
+                    }
+                );
         }
 
         public async Task<OperationResult<bool>> UpdateAsync(int id, UpdateInstructionDto dto)

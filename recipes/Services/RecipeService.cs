@@ -1,4 +1,5 @@
 ﻿using recipes.Common;
+using recipes.DTO;
 using recipes.DTO.Ingredients;
 using recipes.DTO.Instructions;
 using recipes.DTO.Recipes;
@@ -54,7 +55,7 @@ namespace recipes.Services
             });
         }
 
-        public async Task<OperationResult<bool>> CreateAsync(CreateRecipeDto dto)
+        public async Task<OperationResult<CreateResponseDto>> CreateAsync(CreateRecipeDto dto)
         {
             var recipe = new Recipe
             {
@@ -64,7 +65,9 @@ namespace recipes.Services
             };
 
             await _recipeRepository.AddAsync(recipe);
-            return OperationResult<bool>.Success(true);
+            return OperationResult<CreateResponseDto>.Success(
+            new CreateResponseDto { Id = recipe.Id }
+);
         }
         public async Task<OperationResult<RecipeDetailDto>> GetFullRecipeByIdAsync(int id)
         {

@@ -3,6 +3,7 @@ import AddIngredient from "./AddIngredient";
 import AddInstruction from "./AddInstruction";
 
 const AddRecipe = () => {
+  const [recipeId, setRecipeId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [cookingTimeMinutes, setCookingTimeMinutes] = useState("");
@@ -21,8 +22,8 @@ const AddRecipe = () => {
   const [addInstruction, setAddInstruction] = useState(false);
 
   const [recipe, setRecipe] = useState("");
-  const [ingredients, setIngredient] = useState([]);
-  const [instructions, setInstruction] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState([]);
 
   const [showSavedData, setShowSavedData] = useState(false);
 
@@ -44,7 +45,12 @@ const AddRecipe = () => {
     setUnit("");
     // lägg till vad som bestämmer om man ska gå vidare till instruktioner eller fortsätta med ingredient.
   };
-  const handleInstructionSave = () => {};
+  const handleInstructionSave = () => {
+    let instruction = { stepNumber: stepNumber, description: stepDescription };
+    setInstructions((prev) => [...prev, instruction]);
+    setStepNumber("");
+    setStepDescription("");
+  };
 
   return (
     showSavedData && (
