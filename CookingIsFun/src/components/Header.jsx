@@ -1,11 +1,12 @@
 import { useState } from "react";
 import hamMenu from "../assets/Hamburger.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import close from "../assets/Cross.svg";
 
 const Header = () => {
   const [openHam, setOpenHam] = useState(false);
+  const navigate = useNavigate();
   return (
     <>
       <div className="header">
@@ -18,7 +19,7 @@ const Header = () => {
           MAT
         </NavLink>
         <div>
-          <button>Add</button>
+          <button onClick={() => navigate("/add-recipe")}>Lägg till</button>
         </div>
       </div>
       {openHam && (

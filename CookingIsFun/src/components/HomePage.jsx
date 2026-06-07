@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../style/homePage.css";
+import { NavLink } from "react-router-dom";
 const HomePage = () => {
   return (
     <main>
@@ -25,7 +26,9 @@ const HomePage = () => {
             Starta en pod eller lite härlig musik, slappna av och STRESSA INTE!
           </p>
         </div>
-        <button>Till Recepten</button>
+        <NavLink className="unstyled-link" to={"/recipes"}>
+          <button>Till Recepten</button>{" "}
+        </NavLink>
       </section>
       {/* add a box with a few recipes  */}
     </main>

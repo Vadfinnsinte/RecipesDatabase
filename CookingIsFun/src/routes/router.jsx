@@ -3,6 +3,7 @@ import App from "../App";
 import Recipes from "../components/Recipes";
 import HomePage from "../components/HomePage";
 import Recipe from "../components/Recipe";
+import AddRecipe from "../components/AddRecipe";
 
 const router = createHashRouter([
   {
@@ -20,6 +21,10 @@ const router = createHashRouter([
       {
         path: "/recipe",
         element: <Recipe />,
+      },
+      {
+        path: "/add-recipe",
+        element: <AddRecipe />,
       },
     ],
   },
