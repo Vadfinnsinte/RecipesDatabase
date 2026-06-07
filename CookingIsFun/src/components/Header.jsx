@@ -10,13 +10,13 @@ const Header = () => {
   return (
     <>
       <div className="header">
-        <img
+        {/* <img
           src={hamMenu}
           alt="hamburger menu"
           onClick={() => setOpenHam(!openHam)}
-        />
+        /> */}
         <NavLink className="unstyled-link homelink" to={"/"}>
-          MAT
+          Kocka<span className="orange">Loss</span>
         </NavLink>
         <div>
           <button onClick={() => navigate("/add-recipe")}>Lägg till</button>

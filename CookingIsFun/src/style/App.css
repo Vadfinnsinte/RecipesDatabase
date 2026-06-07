@@ -7,6 +7,7 @@
 }
 * {
   font-family: "Courier New", Courier, monospace;
+  color: var(--text-color);
 }
 body {
   background-color: var(--bg-color);
@@ -15,7 +16,7 @@ body {
 .header {
   display: grid;
   background-color: var(--accent-blue);
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   padding: 0 2rem;
   color: var(--text-color);
   img {
@@ -33,6 +34,8 @@ body {
     font-weight: bold;
     unicode-bidi: isolate;
     color: var(--text-color);
+    /* align-self: center; */
+    text-align: left;
   }
   div {
     align-self: center;
@@ -99,6 +102,7 @@ input {
   border-radius: 0.5rem;
   border: none;
   background-color: var(--text-color);
+  color: var(--bg-color);
 }
 
 .saved-data {
@@ -106,6 +110,14 @@ input {
   border-radius: 2rem 2rem 0 0;
   background-color: #518a8a;
   margin: 0 1.5em;
+  /* display: flex;
+  flex-direction: column; */
+  h3 {
+    color: black;
+  }
+}
+.saved-data p {
+  color: black;
 }
 .text-center {
   text-align: center;
@@ -113,10 +125,31 @@ input {
 .container-p {
   display: flex;
   flex-direction: row;
+  p {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 }
 .m-r {
   margin-right: 1rem;
 }
 .done {
   background-color: var(--bg-color);
+  padding: 0.3rem;
+  align-self: flex-end;
+  max-width: 20%;
+  border-radius: 1rem;
+  p {
+    color: var(--text-color);
+  }
+}
+.done.bg {
+  background-color: var(--bg-brown);
+}
+.flex-c {
+  display: flex;
+  flex-direction: column;
+}
+.orange {
+  color: var(--bg-brown);
 }

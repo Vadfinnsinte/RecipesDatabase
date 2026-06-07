@@ -41,7 +41,7 @@ const Recipes = () => {
           /> */}
           <div className="recipes-layout">
             {recipes.map((recipe) => (
-              <div className="recipe-card" key={recipe.name}>
+              <div className="recipe-card" key={recipe.id}>
                 <h3 className="name-height">{recipe.name}</h3>
                 <p className="margin-p">{recipe.description}</p>
                 <p>{recipe.cookingTimeMinutes} min</p>

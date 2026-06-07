@@ -5,6 +5,8 @@ import { createIngredient } from "../data/Ingredient/Create";
 import { createInstruction } from "../data/Instruction/Create";
 import InputLabel from "./InputLabel";
 import { createRecipe } from "../data/Recipe/Create";
+import { useNavigate } from "react-router-dom";
+import SaveData from "./SavedData";
 
 const AddRecipe = () => {
   const [recipeId, setRecipeId] = useState("");
@@ -31,9 +33,12 @@ const AddRecipe = () => {
 
   const [showSavedData, setShowSavedData] = useState(false);
   const [showBox, setShowBox] = useState(false);
+  const [done, setDone] = useState(false);
   const [boxTxt, setBoxTxt] = useState("");
 
   const [anotherInstruction, setAnotherInstruction] = useState(false);
+
+  const navigate = useNavigate();
 
   const onRecipeSave = async () => {
     const recipeData = {
@@ -44,7 +49,7 @@ const AddRecipe = () => {
     setRecipe(recipeData);
 
     try {
-      const result = await createRecipe(recipe);
+      const result = await createRecipe(recipeData);
       setRecipeId(result.id);
       setShowSavedData(true);
       setAddRecipe(false);
@@ -87,13 +92,19 @@ const AddRecipe = () => {
     setShowBox(false);
   };
   const handleDone = () => {
-    // Gör en popup som är på timeuot, navigera sedan till receptsidan.
+    setAddInstruction(false);
+    setShowSavedData(false);
+    setDone(true);
+    setTimeout(() => {
+      setDone(false);
+      navigate("/");
+    }, 2000);
   };
 
   return (
     <>
       {/* lägg till en Avsluta knapp, radera osparad data   */}
-      <section className="home-page">
+      <section className="home-page flex-c">
         {addRecipe && (
           <form>
             <h1>Lägg till nytt recept</h1>
@@ -146,43 +157,27 @@ const AddRecipe = () => {
 
             <button onClick={handleYes}>Ja</button>
           </div>
-          //   behövs nog inte. Bara en gå vidare till instruktioner knapp. Sedan en granska recept. sedan spara, ändra eller ta bort.
+        )}
+        {anotherInstruction && (
+          <div className="done">
+            {done ? (
+              <p>Sparar data... </p>
+            ) : (
+              <div>
+                <p>Klar med ditt recept? </p>
+
+                <button onClick={handleDone}>Klicka här</button>
+              </div>
+            )}
+          </div>
         )}
       </section>
       {showSavedData && (
-        <div className="saved-data">
-          <div className="text-center">
-            <h3>{recipe.name}</h3>
-            <p>{recipe.description}</p>
-            <p>{recipe.cookingTimeMinutes} min</p>
-          </div>
-          <div>
-            <h2>Ingredienser</h2>
-            {ingredients?.map((i) => (
-              <div className="container-p">
-                <p className="m-r">{i.name},</p>
-                <p>{i.amount}</p>
-                <p>{i.unit}.</p>
-              </div>
-            ))}
-          </div>
-          <div>
-            <h2>Instruktioner</h2>
-            {instructions?.map((i) => (
-              <div className="container-p">
-                <p className="m-r">{i.stepNumber}</p>
-                <p>{i.description}</p>
-              </div>
-            ))}
-          </div>
-          {anotherInstruction && (
-            <div className="done">
-              <p>Klar med ditt recept? </p>
-
-              <button onClick={handleDone}>Klicka här</button>
-            </div>
-          )}
-        </div>
+        <SaveData
+          recipe={recipe}
+          ingredients={ingredients}
+          instructions={instructions}
+        />
       )}
     </>
   );
