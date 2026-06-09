@@ -19,6 +19,11 @@ Gillar att testa mina ideér med att bygga både backend och frontend. Även om 
 - REST API kommunikation mellan frontend och backend
 - Testing av kod i databasen med NSubstitut
 
+### För att testa denna lokalt så skapa en .env i root och lägg till:
+``` 
+VITE_BACKEND_CONNECTION=https://<dinBackendLoclHost>/api
+```
+
 ## API endpoints:
 
 ### Recipe
