@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GetEverything } from "../data/Recipe/GetAll";
+import ChangeRecipe from "./ChangeRecipe";
 
 const Recipe = () => {
   const [loading, setLoading] = useState(false);
@@ -9,10 +10,17 @@ const Recipe = () => {
     ingredients: [],
     instructions: [],
   });
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [cookingTimeMinutes, setCookingTimeMinutes] = useState("");
+  const [openRecipe, setOpenRecipe] = useState(false);
+  const [openIngredient, setOpenIngredient] = useState(false);
+  const [openInstruction, setOpenInstruction] = useState(false);
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const ogrRecipe = state?.recipe;
+  let ogrRecipe = state?.recipe;
+
   const id = state?.recipe.id;
 
   const fetchRecipe = async () => {
@@ -20,7 +28,11 @@ const Recipe = () => {
       setLoading(true);
 
       const data = await GetEverything(id);
-      setRecipe(data);
+      setRecipe({
+        ...data,
+        description: ogrRecipe.description,
+        cookingTimeMinutes: ogrRecipe.cookingTimeMinutes,
+      });
       setLoading(false);
     } catch (error) {
       setErrorTxt("Något gick fel, försök igen senare.");
@@ -42,32 +54,74 @@ const Recipe = () => {
   let sortedSteps = [...(recipe.instructions ?? [])].sort(
     (a, b) => a.stepNumber - b.stepNumber,
   );
+  const handleChangeRecipe = () => {
+    setOpenRecipe(true);
+    setCookingTimeMinutes(ogrRecipe.cookingTimeMinutes);
+    setName(recipe.name);
+    setDescription(ogrRecipe.description);
+  };
 
   return (
     <>
       {!loading ? (
         <div className="recipe-layout">
           <div className="text-center">
-            <h1>{recipe.name}</h1>
-            <h3>{ogrRecipe.cookingTimeMinutes} min</h3>
-            <p>{ogrRecipe.description}</p>
+            <div className="grid-r">
+              <h1>{recipe.name}</h1>
+              <div className="flex-end">
+                <button onClick={handleChangeRecipe}>Ändra</button>
+              </div>
+            </div>
+            <h3>{recipe.cookingTimeMinutes} min</h3>
+            <p>{recipe.description}</p>
           </div>
+          {openRecipe && (
+            <div className="absolut-change ">
+              <div className="place-right">
+                <button className="red " onClick={() => setOpenRecipe(false)}>
+                  Close
+                </button>
+              </div>
+              <ChangeRecipe
+                setRecipe={setRecipe}
+                id={id}
+                name={name}
+                setName={setName}
+                description={description}
+                setDescription={setDescription}
+                cookingTimeMinutes={cookingTimeMinutes}
+                setCookingTimeMinutes={setCookingTimeMinutes}
+                setOpenRecipe={setOpenRecipe}
+                ogrRecipe={ogrRecipe}
+              />
+            </div>
+          )}
           <section>
             <div>
               <h2>Ingredienser</h2>
               {recipe.ingredients.map((ingredient) => (
-                <p key={ingredient.id}>
-                  {`${ingredient.amount !== 0 ? ingredient.amount : ""} ${
-                    ingredient.unit
-                  } ${ingredient.name}`}
-                </p>
+                <div key={ingredient.id} className="flex-r">
+                  <p>
+                    {`${ingredient.amount !== 0 ? ingredient.amount : ""} ${
+                      ingredient.unit
+                    } ${ingredient.name}`}
+                  </p>
+                  <div>
+                    <button>Ändra</button>
+                  </div>
+                </div>
               ))}
             </div>
 
             <div>
               <h2>Gör såhär:</h2>
               {sortedSteps.map((step) => (
-                <p key={step.id}>{`${step.stepNumber}. ${step.description}`}</p>
+                <div key={step.id} className="flex-r">
+                  <p>{`${step.stepNumber}. ${step.description}`}</p>
+                  <div>
+                    <button>Ändra</button>
+                  </div>
+                </div>
               ))}
             </div>
           </section>

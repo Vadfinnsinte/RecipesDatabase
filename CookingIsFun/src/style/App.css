@@ -150,6 +150,22 @@ input {
   display: flex;
   flex-direction: column;
 }
+.flex-r {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.grid-r {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  h1 {
+    text-align: end;
+  }
+}
 .orange {
   color: var(--bg-brown);
+}
+.red {
+  background-color: rgb(151, 20, 20);
+  color: var(--text-color);
 }

@@ -47,3 +47,21 @@
 .text-center {
   text-align: center;
 }
+.flex-end {
+  align-self: center;
+  text-align: end;
+}
+
+/* CHANGE  */
+
+.absolut-change {
+  position: absolute;
+  background-color: var(--accent-blue);
+  top: 20%;
+  left: 40%;
+  padding: 0.5rem 3rem;
+  border-radius: 1rem;
+}
+.place-right {
+  text-align: right;
+}
