@@ -12,14 +12,10 @@ export const updateIngredient = async (id, ingredient) => {
       unit: ingredient.unit,
     }),
   });
-  const data = await response.json();
+
   if (!response.ok) {
-    if (response.status === 500) {
-      throw new Error("Server error, try again later");
-    } else {
-      console.log("Something went wrong");
-    }
+    console.log("Something went wrong");
   }
 
-  return data;
+  return;
 };

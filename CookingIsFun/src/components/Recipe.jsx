@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GetEverything } from "../data/Recipe/GetAll";
 import ChangeRecipe from "./ChangeRecipe";
+import ChangeIngredient from "./ChangeIngredient";
+import ChangeInstruction from "./ChangeInstruction";
+import { deleteRecipeIngIns } from "../data/DeleteRecipeIngIns";
 
 const Recipe = () => {
   const [loading, setLoading] = useState(false);
@@ -13,9 +16,20 @@ const Recipe = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [cookingTimeMinutes, setCookingTimeMinutes] = useState("");
+
+  const [ingredientName, setIngredientName] = useState("");
+  const [ingredientId, setIngredientId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [unit, setUnit] = useState("");
+  const [instructionId, setInstructionId] = useState("");
+  const [stepNumber, setStepNumber] = useState("");
+  const [stepDescription, setStepDescription] = useState("");
+
   const [openRecipe, setOpenRecipe] = useState(false);
   const [openIngredient, setOpenIngredient] = useState(false);
   const [openInstruction, setOpenInstruction] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -60,13 +74,38 @@ const Recipe = () => {
     setName(recipe.name);
     setDescription(ogrRecipe.description);
   };
-
+  const handleChangeIngredient = (ingredient) => {
+    setIngredientId(ingredient.id);
+    setIngredientName(ingredient.name);
+    setAmount(ingredient.amount);
+    setUnit(ingredient.unit);
+    setOpenIngredient(true);
+  };
+  const handleChangeInstruction = (step) => {
+    setInstructionId(step.id);
+    setStepNumber(step.stepNumber);
+    setStepDescription(step.description);
+    setOpenInstruction(true);
+  };
+  const handleDelete = async () => {
+    try {
+      const data = await deleteRecipeIngIns(id);
+      navigate("/recipes");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       {!loading ? (
         <div className="recipe-layout">
           <div className="text-center">
             <div className="grid-r">
+              <div className="start">
+                <button className="red" onClick={() => setOpenDelete(true)}>
+                  Radera
+                </button>
+              </div>
               <h1>{recipe.name}</h1>
               <div className="flex-end">
                 <button onClick={handleChangeRecipe}>Ändra</button>
@@ -75,11 +114,26 @@ const Recipe = () => {
             <h3>{recipe.cookingTimeMinutes} min</h3>
             <p>{recipe.description}</p>
           </div>
+          {openDelete && (
+            <div className="absolut-change">
+              <div className="ep">
+                <div>
+                  <p>Är du säker? detta går inte ångra</p>
+                  <div className="flex-r">
+                    <button onClick={() => setOpenDelete(false)}>Avbryt</button>
+                    <button className="red" onClick={handleDelete}>
+                      Radera
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           {openRecipe && (
             <div className="absolut-change ">
               <div className="place-right">
                 <button className="red " onClick={() => setOpenRecipe(false)}>
-                  Close
+                  Stäng
                 </button>
               </div>
               <ChangeRecipe
@@ -98,6 +152,30 @@ const Recipe = () => {
           )}
           <section>
             <div>
+              {openIngredient && (
+                <div className="absolut-change ">
+                  <div className="place-right">
+                    <button
+                      className="red "
+                      onClick={() => setOpenIngredient(false)}
+                    >
+                      Stäng
+                    </button>
+                  </div>
+                  <ChangeIngredient
+                    ingredientId={ingredientId}
+                    ingredientName={ingredientName}
+                    setIngredientName={setIngredientName}
+                    amount={amount}
+                    setAmount={setAmount}
+                    unit={unit}
+                    setUnit={setUnit}
+                    setOpenIngredient={setOpenIngredient}
+                    fetchRecipe={fetchRecipe}
+                  />
+                </div>
+              )}
+
               <h2>Ingredienser</h2>
               {recipe.ingredients.map((ingredient) => (
                 <div key={ingredient.id} className="flex-r">
@@ -107,19 +185,44 @@ const Recipe = () => {
                     } ${ingredient.name}`}
                   </p>
                   <div>
-                    <button>Ändra</button>
+                    <button onClick={() => handleChangeIngredient(ingredient)}>
+                      Ändra
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
             <div>
+              {openInstruction && (
+                <div className="absolut-change ">
+                  <div className="place-right">
+                    <button
+                      className="red "
+                      onClick={() => setOpenInstruction(false)}
+                    >
+                      Stäng
+                    </button>
+                  </div>
+                  <ChangeInstruction
+                    id={instructionId}
+                    stepNumber={stepNumber}
+                    setStepNumber={setStepNumber}
+                    stepDescription={stepDescription}
+                    setStepDescription={setStepDescription}
+                    fetchRecipe={fetchRecipe}
+                    setOpenInstruction={setOpenInstruction}
+                  />
+                </div>
+              )}
               <h2>Gör såhär:</h2>
               {sortedSteps.map((step) => (
                 <div key={step.id} className="flex-r">
                   <p>{`${step.stepNumber}. ${step.description}`}</p>
                   <div>
-                    <button>Ändra</button>
+                    <button onClick={() => handleChangeInstruction(step)}>
+                      Ändra
+                    </button>
                   </div>
                 </div>
               ))}

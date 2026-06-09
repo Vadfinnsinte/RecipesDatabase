@@ -33,7 +33,6 @@ const AddIngredient = ({
       <button type="button" onClick={handleIngredientSave}>
         Spara
       </button>
-      {/* lägg till vad som bestämmer om man ska gå vidare till instruktioner eller fortsätta med ingredient */}
     </form>
   );
 };

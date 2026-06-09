@@ -11,7 +11,7 @@ export const updateInstruction = async (id, instruction) => {
       description: instruction.description,
     }),
   });
-  const data = await response.json();
+
   if (!response.ok) {
     if (response.status === 500) {
       throw new Error("Server error, try again later");
@@ -20,5 +20,5 @@ export const updateInstruction = async (id, instruction) => {
     }
   }
 
-  return data;
+  return;
 };

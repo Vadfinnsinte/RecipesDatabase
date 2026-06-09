@@ -13,13 +13,9 @@ export const updateRecipe = async (id, recipe) => {
     }),
   });
 
-  const data = await response.json();
-
   if (!response.ok) {
-    if (response.status === 500) {
-      throw new Error("Server error, try again later");
-    }
+    console.log("something went wrong");
   }
 
-  return data;
+  return;
 };

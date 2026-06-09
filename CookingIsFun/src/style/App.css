@@ -157,9 +157,9 @@ input {
 }
 .grid-r {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   h1 {
-    text-align: end;
+    text-align: center;
   }
 }
 .orange {
@@ -168,4 +168,8 @@ input {
 .red {
   background-color: rgb(151, 20, 20);
   color: var(--text-color);
+}
+.start {
+  align-self: center;
+  text-align: start;
 }
