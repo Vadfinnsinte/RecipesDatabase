@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using recipes.DTO.Instructions;
 using recipes.Interfaces;
 
@@ -52,8 +53,11 @@ namespace recipes.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateInstructionDto dto)
         {
-            await _instructionService.CreateAsync(dto);
-            return Created();
+            var result = await _instructionService.CreateAsync(dto);
+            if (!result.IsSuccess)
+                return BadRequest(result.Errors);
+
+            return Ok(result.Data);
         }
 
         [HttpPut("{id:int}")]

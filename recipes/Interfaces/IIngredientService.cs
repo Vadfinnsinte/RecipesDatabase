@@ -1,4 +1,5 @@
 ﻿using recipes.Common;
+using recipes.DTO;
 using recipes.DTO.Ingredients;
 
 namespace recipes.Interfaces
@@ -9,7 +10,7 @@ namespace recipes.Interfaces
         Task<OperationResult<IngredientResponseDto>> GetByIdAsync(int id);
         Task<OperationResult<List<IngredientResponseDto>>> GetByRecipeIdAsync(int recipeId);
 
-        Task<OperationResult<bool>> CreateAsync(CreateIngredientDto dto);
+        Task<OperationResult<CreateResponseDto>> CreateAsync(CreateIngredientDto dto);
         Task<OperationResult<bool>> UpdateAsync(int id, UpdateIngredientDto dto);
         Task<OperationResult<bool>> DeleteAsync(int id);
     }

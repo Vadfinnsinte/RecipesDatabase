@@ -1,0 +1,10 @@
+.home-page {
+  margin: 0 1.5em;
+  background-color: var(--bg-brown);
+  padding: 2rem;
+  border-radius: 0 0 2rem 2rem;
+  color: var(--text-color);
+  h1 {
+    text-align: center;
+  }
+}
