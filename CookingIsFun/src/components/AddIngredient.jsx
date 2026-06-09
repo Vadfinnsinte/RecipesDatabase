@@ -8,6 +8,8 @@ const AddIngredient = ({
   unit,
   setUnit,
   handleIngredientSave,
+  errorIngredientMessage,
+  showIngredientError,
 }) => {
   return (
     <form>
@@ -26,13 +28,16 @@ const AddIngredient = ({
       />
       <InputLabel
         type={"text"}
-        labelTxt={"Mått typ"}
+        labelTxt={"Mått(ex dl)"}
         value={unit}
         setValue={setUnit}
       />
       <button type="button" onClick={handleIngredientSave}>
         Spara
       </button>
+      {showIngredientError && (
+        <span className="error-m">{errorIngredientMessage}</span>
+      )}
     </form>
   );
 };

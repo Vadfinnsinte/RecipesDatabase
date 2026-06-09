@@ -173,3 +173,6 @@ input {
   align-self: center;
   text-align: start;
 }
+.error-m {
+  margin-left: 0.3rem;
+}

@@ -37,10 +37,23 @@ const AddRecipe = () => {
   const [boxTxt, setBoxTxt] = useState("");
 
   const [anotherInstruction, setAnotherInstruction] = useState(false);
-
+  const [errorRecipeMessage, setErrorRecipeMessage] =
+    useState("Något gick fel.");
+  const [errorIngredientMessage, setErroIngredientMessage] =
+    useState("Något gick fel.");
+  const [errorInstructionMessage, setErroInstructionMessage] =
+    useState("Något gick fel.");
+  const [showRecipeError, setShowRecipeError] = useState(false);
+  const [showIngredientError, setShowIngredientError] = useState(false);
+  const [showInstructioError, setShowInstructioError] = useState(false);
   const navigate = useNavigate();
-
+  const resetError = () => {
+    setShowRecipeError(false);
+    setShowIngredientError(false);
+    setShowInstructioError(false);
+  };
   const onRecipeSave = async () => {
+    resetError();
     const recipeData = {
       name,
       description,
@@ -55,10 +68,12 @@ const AddRecipe = () => {
       setAddRecipe(false);
       setIngredient(true);
     } catch (error) {
-      console.log(error.message);
+      setShowRecipeError(true);
+      setErrorRecipeMessage(error.message);
     }
   };
   const handleIngredientSave = async () => {
+    resetError();
     let ingredient = { name: ingredientName, amount: amount, unit: unit };
     try {
       let response = await createIngredient(ingredient, recipeId);
@@ -70,10 +85,12 @@ const AddRecipe = () => {
       setShowBox(true);
       setBoxTxt("ingredienser");
     } catch (error) {
-      console.log(error.message);
+      setShowIngredientError(true);
+      setErroIngredientMessage(error.message);
     }
   };
   const handleInstructionSave = async () => {
+    resetError();
     let instruction = { stepNumber: stepNumber, description: stepDescription };
     try {
       let response = await createInstruction(instruction, recipeId);
@@ -83,7 +100,8 @@ const AddRecipe = () => {
       setStepDescription("");
       setAnotherInstruction(true);
     } catch (error) {
-      console.log(error.message);
+      setShowInstructioError(true);
+      setErroInstructionMessage(error.message);
     }
   };
   const handleYes = () => {
@@ -103,11 +121,11 @@ const AddRecipe = () => {
 
   return (
     <>
-      {/* lägg till en Avsluta knapp, radera osparad data   */}
       <section className="home-page flex-c">
         {addRecipe && (
           <form>
             <h1>Lägg till nytt recept</h1>
+
             <InputLabel
               type={"text"}
               labelTxt={"Namn"}
@@ -129,6 +147,9 @@ const AddRecipe = () => {
             <button type="button" onClick={onRecipeSave}>
               Spara
             </button>
+            {showRecipeError && (
+              <span className="error-m">{errorRecipeMessage}</span>
+            )}
           </form>
         )}
         {addIngredient && (
@@ -140,6 +161,8 @@ const AddRecipe = () => {
             unit={unit}
             setUnit={setUnit}
             handleIngredientSave={handleIngredientSave}
+            errorIngredientMessage={errorIngredientMessage}
+            showIngredientError={showIngredientError}
           />
         )}
         {addInstruction && (
@@ -149,6 +172,8 @@ const AddRecipe = () => {
             stepDescription={stepDescription}
             setStepDescription={setStepDescription}
             handleInstructionSave={handleInstructionSave}
+            errorInstructionMessage={errorInstructionMessage}
+            showInstructioError={showInstructioError}
           />
         )}
         {showBox && (

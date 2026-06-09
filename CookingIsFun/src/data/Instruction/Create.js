@@ -16,9 +16,14 @@ export const createInstruction = async (instruction, recipeId) => {
 
   if (!response.ok) {
     if (response.status === 500) {
-      throw new Error("Server error, try again later");
+      throw new Error("Server error, försök igen senare");
+    } else if (response.status === 400) {
+      throw new Error(
+        "Måste ha steg nummmr | Beskrivning måste ha minst 5 max 500 tecken |",
+      );
     }
-    throw new Error(data?.message || "Something went wrong");
+
+    throw new Error(data?.message || "Något gick fel, försök igen senare");
   }
 
   return data;

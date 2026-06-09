@@ -6,6 +6,8 @@ const AddInstruction = ({
   stepDescription,
   setStepDescription,
   handleInstructionSave,
+  errorInstructionMessage,
+  showInstructioError,
 }) => {
   return (
     <form>
@@ -25,6 +27,9 @@ const AddInstruction = ({
       <button type="button" onClick={handleInstructionSave}>
         Spara
       </button>
+      {showInstructioError && (
+        <span className="error-m">{errorInstructionMessage}</span>
+      )}
     </form>
   );
 };

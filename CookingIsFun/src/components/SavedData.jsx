@@ -9,7 +9,7 @@ const SaveData = ({ recipe, ingredients, instructions }) => {
       <div>
         <h3>Ingredienser</h3>
         {ingredients?.map((i) => (
-          <div className="container-p">
+          <div key={i.id} className="container-p">
             <p className="m-r">{i.name},</p>
             <p>{i.amount}</p>
             <p>{i.unit}.</p>
@@ -19,7 +19,7 @@ const SaveData = ({ recipe, ingredients, instructions }) => {
       <div>
         <h3>Instruktioner</h3>
         {instructions?.map((i) => (
-          <div className="container-p">
+          <div key={i.id} className="container-p">
             <p className="m-r">{i.stepNumber}.</p>
             <p>{i.description}</p>
           </div>

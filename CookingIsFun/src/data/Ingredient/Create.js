@@ -17,9 +17,14 @@ export const createIngredient = async (ingredient, recipeId) => {
 
   if (!response.ok) {
     if (response.status === 500) {
-      throw new Error("Server error, try again later");
+      throw new Error("Server error, försök igen senare");
+    } else if (response.status === 400) {
+      throw new Error(
+        "Namn måste ha minst 2, max 100 tecken | Mängd minst 0.1, max 10000 | Mått måste finnas. ",
+      );
+    } else {
+      throw new Error(data?.message || "Något gick fel, försök igen senare");
     }
-    throw new Error(data?.message || "Something went wrong");
   }
 
   return data;
