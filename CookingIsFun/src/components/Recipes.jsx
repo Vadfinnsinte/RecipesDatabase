@@ -17,6 +17,8 @@ const Recipes = () => {
       setRecipes(data);
       setLoading(false);
     } catch (error) {
+      console.log(error.message);
+
       setErrorTxt("Något gick fel, försök igen senare.");
     }
   };
